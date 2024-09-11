@@ -56,7 +56,7 @@ class RetrievalModule:
                 self.plm = AutoModel.from_pretrained(retriever_name)
         except:
             assert False, print('{} is an invalid retriever name. Check Documentation.'.format(retriever_name))
-
+        
         # If not pre-computed, create vectors
         self.retrieval_name_dir = VECTOR_DIR + '/' + self.retriever_name.replace('/', '_').replace('.', '') + '_' + pool_method
 
@@ -66,6 +66,7 @@ class RetrievalModule:
         # Get previously computed vectors
         precomp_strings, precomp_vectors = self.get_precomputed_plm_vectors(self.retrieval_name_dir)
 
+        
         # Get AUI Strings to be Encoded
         string_df = pd.read_csv(string_filename, sep='\t')
         string_df.strings = [processing_phrases(str(s)) for s in string_df.strings]
@@ -73,7 +74,7 @@ class RetrievalModule:
 
         # Identify Missing Strings
         missing_strings = self.find_missing_strings(sorted_df.strings.unique(), precomp_strings)
-
+        
         # Encode Missing Strings
         if len(missing_strings) > 0:
             print('Encoding {} Missing Strings'.format(len(missing_strings)))
@@ -96,6 +97,7 @@ class RetrievalModule:
         queries = string_df[string_df.type == 'query']
         kb = string_df[string_df.type == 'kb']
 
+        
         nearest_neighbors = self.retrieve_knn(queries.strings.values, kb.strings.values)
         pickle.dump(nearest_neighbors, open(self.retrieval_name_dir + '/nearest_neighbor_{}.p'.format(string_filename.split('/')[1].split('.')[0]), 'wb'))
 
@@ -273,7 +275,7 @@ class RetrievalModule:
 
         # Preparing Data for k-NN Algorithm
         print('Chunking')
-
+        
         dim = len(original_vecs[0])
         index_split = 4
         index_chunks = np.array_split(original_vecs, index_split)
@@ -281,7 +283,6 @@ class RetrievalModule:
 
         # Building and Querying FAISS Index by parts to keep memory usage manageable.
         print('Building Index')
-
         index_chunk_D = []
         index_chunk_I = []
 
@@ -303,6 +304,9 @@ class RetrievalModule:
             else:
                 gpu_resources = faiss.StandardGpuResources()
                 gpu_index = faiss.index_cpu_to_gpu(gpu_resources, 0, index)
+                
+                #print('here')
+                #exit()
 
             print()
             gpu_index.add(index_chunk)
