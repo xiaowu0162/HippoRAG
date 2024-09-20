@@ -5,12 +5,8 @@
 #export OPENAI_API_BASE="http://localhost:8001/v1"
 #export OPENAI_API_KEY="5RxH5JgvQhDq149u4LtGOoIiJc8R1cse"
 # export OPENAI_API_KEY="empty"
-# export OPENAI_API_KEY="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"  # personal - long-mem-key1
-export OPENAI_API_KEY="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"  # long-mem-uclanlp-1
-# export OPENAI_ORGANIZATION="org-AG8n2A8YhmcdF9RVq5q8TgOm"  # personal
-export OPENAI_ORGANIZATION="org-Igmvps22Goq7QU5eddDp2SyR"   # UCLANLP
 
-export TOGETHER_API_KEY="248ce37e5cfb74deb3de13ff3c403adf5101e64f33af89d11cd82d779e3badca"
+export TOGETHER_API_KEY=""
 
 retriever_name="facebook/contriever"
 llm_model='meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo'   # 'gpt-35-turbo-1106'
